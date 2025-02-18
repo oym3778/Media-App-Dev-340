@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +18,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: Minecraft
+      fonts:
+        - asset: assets/fonts/retro_computer_personal_use.ttf
+    - family: Regular
+      fonts:
+        - asset: assets/fonts/VT323-Regular.ttf
+  assets:
+    - assets/images/
