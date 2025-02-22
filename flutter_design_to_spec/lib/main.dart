@@ -49,8 +49,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final String planks =
+  final String itemText =
       "Praesent fringilla dapibus enim, sed sodales mi mattis id. Aliquam venenatis elementum sapien, vel facilisis orci volutpat vitae. Pellentesque viverra dui sed erat fringilla, ac faucibus sem pellentesque. Nam placerat et orci nec rutrum. Pellentesque ultricies tincidunt nisl, ac tempus ligula venenatis quis. Nunc nec tellus laoreet, tristique magna nec, feugiat odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;";
+  static const Color mainBackground = Color(0xFF35353D);
+  static const Color appBar = Color(0xFFA19FA2);
+  static const Color textBorder = Color(0xFFFFFFFF);
+  static const Color gradientDark = Color(0xFF374947);
+  static const Color gradientLight = Color(0xFF828C8E);
+  static const Color itemBackground = Color(0xFF324D44);
+  static const Color textAreas = Color(0xFF686868);
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +67,11 @@ class _MainPageState extends State<MainPage> {
           "TREES & WOOD",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
-        backgroundColor: Color(0x35353D00), // TO-DO Fix the color
+        backgroundColor: appBar, // TO-DO Fix the color
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ColorFiltered(
-            colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(textBorder, BlendMode.srcIn),
             child: SvgPicture.asset("assets/images/pickaxe.svg"),
           ),
         ),
@@ -72,26 +79,32 @@ class _MainPageState extends State<MainPage> {
           IconButton(
             color: Colors.black,
             icon: const Icon(Icons.account_circle_rounded),
-            // tooltip: 'Show Snackbar',
-            // TO-DO make the button bring up a popup Dialog Box
-
             onPressed: () {
               showDialog(
                 context: (context),
                 builder: (context) {
                   return AlertDialog(
                     title: Text("ABOUT",
-                        style: Theme.of(context).textTheme.headlineMedium),
+                        style: Theme.of(context)
+                            .textTheme
+                            .apply(displayColor: Colors.black)
+                            .headlineMedium),
                     content: Text(
                         "CREATED BY OMAR MORALES-SAEZ\n\nBASED ON THE WORK DONE IN 235'S DESIGN TO SPEC HOMEWORK.\n\nSEPTEMBER 2024",
-                        style: Theme.of(context).textTheme.bodyMedium),
+                        style: Theme.of(context)
+                            .textTheme
+                            .apply(bodyColor: Colors.black)
+                            .bodyMedium),
                     actions: [
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
                         child: Text("OK",
-                            style: Theme.of(context).textTheme.headlineMedium),
+                            style: Theme.of(context)
+                                .textTheme
+                                .apply(displayColor: Colors.purple[200])
+                                .headlineMedium),
                       ),
                     ],
                   );
@@ -104,176 +117,210 @@ class _MainPageState extends State<MainPage> {
       ),
       body: Stack(
         children: [
-          Container(
-              child: Image.asset(
-                  fit: BoxFit.cover,
-                  height: double.infinity,
-                  'assets/images/valley.jpg')),
-          Container(
-            // color: Color(0x35353D00),
-            // color: Colors.grey,
-            child: SingleChildScrollView(
-              child: Column(                
-                children: [
+          Image.asset(
+              fit: BoxFit.cover,
+              height: double.infinity,
+              'assets/images/valley.jpg'),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Column(children: [
                   Column(
-                      // TO-DO I think we can use the stack to set that image in the background to stay static
-                      
-                      children: [
-                        Column(
-                          children: [
-                            // TO-DO Using the folor filter change the backgrtound for the tree
-                            // ColorFiltered(
-                            //   colorFilter:
-                            //       ColorFilter.mode(Colors.white, BlendMode.srcOut),
-                            //   child: Image.asset("assets/images/oaktree.png"),
-                            // ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.green, //TO-DO CHANGE COLOR
-                                  border: Border.all(color: Colors.white, width: 7)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(25.0),
-                                child: Image.asset('assets/images/oaktree.png'),
-                              ),
-                            ),
-                  
-                            // TO-DO add some padding to the text here, maybe just put it in its own text widget? probably something out there
-                            Container(
-                              color: Colors.green, //TO-DO CHANGE COLOR
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "THE OAK TREE",
-                                    style: Theme.of(context).textTheme.headlineMedium,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomRight,
+                            end: Alignment.topLeft,
+                            colors: [
+                              gradientDark,
+                              gradientLight,
+                            ],
+                          ),
+                          // color: gradientDark, //TO-DO CHANGE COLOR
+                          border: Border.all(
+                            color: textBorder,
+                            width: 7,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(25.0),
+                          child: Image.asset('assets/images/oaktree.png'),
+                        ),
+                      ),
+
+                      // TO-DO add some padding to the text here, maybe just put it in its own text widget? probably something out there
+                      Container(
+                        color: textAreas, //TO-DO CHANGE COLOR
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "THE OAK TREE", // to-do align the text to the left
+                                    textAlign: TextAlign.left,
+                                    style:
+                                        Theme.of(context).textTheme.headlineMedium,
                                   ),
-                                  Text(planks),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: 250,
-                              // color: Colors.green,
-                              // child: ColorFiltered(
-                              //   colorFilter:
-                              //       ColorFilter.mode(Colors.blue, BlendMode.src,),
-                              //   child: SvgPicture.asset("assets/images/pickaxe.svg"),
-                              // ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                color: Colors.blueGrey,
-                                width: double.infinity,
-                                height: 200,
-                                child: Row(                        
-                                  children: [
-                                    Material(
-                                      color: const Color.fromARGB(255, 139, 72, 45),
-                                      child: InkWell(
-                                        onTap: () {
-                                          // add some button feature
-                                          showDialog(
-                                            context: (context),
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text("Planks",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineMedium),
-                                                content: Container(
-                                                  child: SingleChildScrollView(
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                            border:
-                                                                Border.all(color: Colors.white),
-                                                          ),
-                                                          child: Image.asset(
-                                                              'assets/images/planks.png'),
-                                                        ),
-                                                        Text(planks)
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                actions: [
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text("CLOSE",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headlineMedium),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                            barrierDismissible: false,
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 170,
-                                          decoration: BoxDecoration(
-                                              border:
-                                                  Border.all(color: Colors.white, width: 7)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(15.0),
-                                            child: Column(
-                                              spacing: 10,
-                                              children: [
-                                                Text("PLANKS",
-                                                          style: Theme.of(context)
-                                                              .textTheme
-                                                              .headlineSmall),
-                                                Image.asset(
-                                                  'assets/images/planks.png'),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ), 
-                              
-                                    Expanded(
-                                      child: Container(
-                                        child: SingleChildScrollView(
-                                          child: Text(
-                                            // overflow: TextOverflow.fade,
-                                            planks,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    // Container(                            
-                                    //   color: Colors.blue,
-                                    //   width: double.infinity,
-                                    //   child: Column(
-                                    //     children: [
-                                    //       // SingleChildScrollView(
-                                    //     // clipBehavior: Clip.hardEdge,
-                                    //     Text(planks)
-                                    //     ],
-                                    //   )
-                                    // ),                      
-                                  ],
                                 ),
                               ),
+                              Text(itemText),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // used to create some space to show the background
+                      SizedBox(
+                        width: double.infinity,
+                        height: 350,
+                      ),
+                      Container(
+                        color: mainBackground,
+                        child: Column(
+                          spacing: 10,
+                          children: [
+                            itemContainer(
+                              context,
+                              'assets/images/planks.png',
+                              'PLANKS',
+                            ),
+                            itemContainer(
+                              context,
+                              'assets/images/stick.png',
+                              'STICKS',
+                            ),
+                            itemContainer(
+                              context,
+                              'assets/images/chest.png',
+                              'CHESTS',
+                            ),
+                            itemContainer(
+                              context,
+                              'assets/images/stairs.png',
+                              'STAIRS',
                             ),
                           ],
                         ),
-                      ]
-                      // child: Column(
-                      //   children: [Text('Hello World!')],
-                      // ),
                       ),
-                ],
-              ),
+                    ],
+                  ),
+                ]),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Padding itemContainer(BuildContext context, String image, String title) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        color: textAreas,
+        width: double.infinity,
+        height: 200,
+        child: Row(
+          children: [
+            Material(
+              color: itemBackground,
+              child: InkWell(
+                onTap: () {
+                  // add some button feature
+                  showDialog(
+                    context: (context),
+                    builder: (context) {
+                      return AlertDialog(
+                        backgroundColor: textAreas,
+                        title: Text(title,
+                            style: Theme.of(context).textTheme.headlineMedium),
+                        content: Container(
+                          color: textBorder,
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: itemBackground,
+                                  border:
+                                      Border.all(width: 10, color: textBorder),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(image),
+                                ),
+                              ),
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(itemText,
+                                            overflow: TextOverflow.fade,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .apply(bodyColor: Colors.black)
+                                                .bodyMedium),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("CLOSE",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .apply(displayColor: Colors.purple[200])
+                                    .headlineMedium),
+                          ),
+                        ],
+                      );
+                    },
+                    barrierDismissible: false,
+                  );
+                },
+                child: Container(
+                  width: 170,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: textBorder, width: 7)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      spacing: 10,
+                      children: [
+                        Text(title,
+                            style: Theme.of(context).textTheme.headlineSmall),
+                        Image.asset(image),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // EXPANDED prevents the text from overflowinng to the right of the screen
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    itemText,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
