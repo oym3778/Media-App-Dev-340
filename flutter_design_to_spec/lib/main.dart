@@ -24,7 +24,7 @@ class MainApp extends StatelessWidget {
           headlineMedium: TextStyle(
             color: Colors.white,
             fontFamily: "Minecraft",
-            fontSize: 25,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
           headlineSmall: TextStyle(
@@ -34,8 +34,6 @@ class MainApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        // useMaterial3: true,
       ),
     );
   }
@@ -124,132 +122,133 @@ class _MainPageState extends State<MainPage> {
           SingleChildScrollView(
             child: Column(
               children: [
-                Column(children: [
-                  Column(
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomRight,
+                      end: Alignment.topLeft,
+                      colors: [
+                        gradientDark,
+                        gradientLight,
+                      ],
+                    ),
+                    border: Border.all(
+                      color: textBorder,
+                      width: 7,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Image.asset('assets/images/oaktree.png'),
+                  ),
+                ),
+                
+                Container(
+                  color: textAreas,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "THE OAK TREE",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus dolor quis mi faucibus luctus.\n\n"
+                          "Aenean blandit quam felis. Phasellus id dui quis eros accumsan malesuada eu ac tortor.\n\n"
+                          "In posuere, libero vel faucibus elementum, mi orci sagittis nisl, vitae aliquam magna metus quis elit. Donec eu imperdiet dui.",
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // used to create some space to show the background
+                SizedBox(
+                  width: double.infinity,
+                  height: 350,
+                ),
+                Container(
+                  color: mainBackground,
+                  child: Column(
+                    spacing: 10,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomRight,
-                            end: Alignment.topLeft,
-                            colors: [
-                              gradientDark,
-                              gradientLight,
-                            ],
-                          ),
-                          // color: gradientDark, //TO-DO CHANGE COLOR
-                          border: Border.all(
-                            color: textBorder,
-                            width: 7,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(25.0),
-                          child: Image.asset('assets/images/oaktree.png'),
-                        ),
+                      itemContainer(
+                        context,
+                        'assets/images/planks.png',
+                        'PLANKS',
                       ),
-
-                      // TO-DO add some padding to the text here, maybe just put it in its own text widget? probably something out there
-                      Container(
-                        color: textAreas, //TO-DO CHANGE COLOR
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "THE OAK TREE", // to-do align the text to the left
-                                    textAlign: TextAlign.left,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium,
-                                  ),
-                                ),
-                              ),
-                              Text(itemText),
-                            ],
-                          ),
+                      itemContainer(
+                        context,
+                        'assets/images/stick.png',
+                        'STICKS',
+                      ),
+                      itemContainer(
+                        context,
+                        'assets/images/chest.png',
+                        'CHESTS',
+                      ),
+                      itemContainer(
+                        context,
+                        'assets/images/stairs.png',
+                        'STAIRS',
+                      ),
+                    ],
+                  ),
+                ),
+                // White space between items and lower image
+                Container(
+                  height: 10,
+                  width: double.infinity,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  height: 350,
+                  width: double
+                      .infinity,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Image.asset(                                
+                          'assets/images/trees.jpg',
+                          fit: BoxFit
+                              .cover, // Makes the image cover the entire container
                         ),
                       ),
-                      // used to create some space to show the background
-                      SizedBox(
-                        width: double.infinity,
-                        height: 350,
-                      ),
-                      Container(
-                        color: mainBackground,
-                        child: Column(
-                          spacing: 10,
-                          children: [
-                            itemContainer(
-                              context,
-                              'assets/images/planks.png',
-                              'PLANKS',
-                            ),
-                            itemContainer(
-                              context,
-                              'assets/images/stick.png',
-                              'STICKS',
-                            ),
-                            itemContainer(
-                              context,
-                              'assets/images/chest.png',
-                              'CHESTS',
-                            ),
-                            itemContainer(
-                              context,
-                              'assets/images/stairs.png',
-                              'STAIRS',
-                            ),
-                          ],
+                      Positioned(
+                        top: 10, // Adjusts text position from the top
+                        left: 10, // Adjusts text position from the left
+                        right: 10, // Ensures text stays within bounds
+                        child: Text(
+                          "TREES ARE PRETTY COOL.\nRIGHT?",
+                          style:
+                              Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 16),
+                          textAlign:
+                              TextAlign.center, // Centers text if needed
                         ),
                       ),
-                      SizedBox(
-                        height: 350,
-                        width: double
-                            .infinity, // Ensures the container takes full width
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: Image.asset(
-                                'assets/images/trees.jpg',
-                                fit: BoxFit
-                                    .cover, // Makes the image cover the entire container
-                              ),
-                            ),
-                            Positioned(
-                              top: 10, // Adjusts text position from the top
-                              left: 10, // Adjusts text position from the left
-                              right: 10, // Ensures text stays within bounds
-                              child: Text(
-                                "TREES ARE PRETTY COOL.\nRIGHT?",
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 16),
-                                textAlign:
-                                    TextAlign.center, // Centers text if needed
-                              ),
-                            ),
-                            Positioned(
-                              bottom:
-                                  10, // Adjusts text position from the bottom
-                              left: 10,
-                              right: 10,
-                              child: Text(
-                                "COPYRIGHT 2024\nRIT SCHOOL OF INTERACTIVE GAMES\nAND MEDIA",
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 16),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
+                      Positioned(
+                        bottom:
+                            10, // Adjusts text position from the bottom
+                        left: 10,
+                        right: 10,
+                        child: Text(
+                          "COPYRIGHT 2024\nRIT SCHOOL OF INTERACTIVE GAMES\nAND MEDIA",
+                          style:
+                              Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 16),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],
                   ),
-                ]),
+                ),
               ],
             ),
           ),
@@ -258,6 +257,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  // Used to create the containers filled with item information. i.e Planks and its text along with button that shows dialog
   Padding itemContainer(BuildContext context, String image, String title) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
