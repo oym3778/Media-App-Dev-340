@@ -67,7 +67,7 @@ class _MainPageState extends State<MainPage> {
           "TREES & WOOD",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
-        backgroundColor: appBar, // TO-DO Fix the color
+        backgroundColor: appBar,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ColorFiltered(
@@ -163,8 +163,9 @@ class _MainPageState extends State<MainPage> {
                                   child: Text(
                                     "THE OAK TREE", // to-do align the text to the left
                                     textAlign: TextAlign.left,
-                                    style:
-                                        Theme.of(context).textTheme.headlineMedium,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
                                   ),
                                 ),
                               ),
@@ -202,6 +203,46 @@ class _MainPageState extends State<MainPage> {
                               context,
                               'assets/images/stairs.png',
                               'STAIRS',
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 350,
+                        width: double
+                            .infinity, // Ensures the container takes full width
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Image.asset(
+                                'assets/images/trees.jpg',
+                                fit: BoxFit
+                                    .cover, // Makes the image cover the entire container
+                              ),
+                            ),
+                            Positioned(
+                              top: 10, // Adjusts text position from the top
+                              left: 10, // Adjusts text position from the left
+                              right: 10, // Ensures text stays within bounds
+                              child: Text(
+                                "TREES ARE PRETTY COOL.\nRIGHT?",
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 16),
+                                textAlign:
+                                    TextAlign.center, // Centers text if needed
+                              ),
+                            ),
+                            Positioned(
+                              bottom:
+                                  10, // Adjusts text position from the bottom
+                              left: 10,
+                              right: 10,
+                              child: Text(
+                                "COPYRIGHT 2024\nRIT SCHOOL OF INTERACTIVE GAMES\nAND MEDIA",
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 16),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ],
                         ),
