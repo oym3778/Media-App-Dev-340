@@ -1,0 +1,12 @@
+List allPossibleExercises = [
+  {"id": 1, "name": "Barbell"},
+  {"id": 2, "name": "SZ-Bar"},
+  {"id": 3, "name": "Dumbbell"},
+  {"id": 4, "name": "Gym mat"},
+  {"id": 5, "name": "Swiss Ball"},
+  {"id": 6, "name": "Pull-up bar"},
+  {"id": 7, "name": "none"},
+  {"id": 8, "name": "Bench"},
+  {"id": 9, "name": "Incline bench"},
+  {"id": 10, "name": "Kettlebell"}
+];
