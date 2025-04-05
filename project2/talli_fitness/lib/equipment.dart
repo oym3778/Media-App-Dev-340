@@ -10,3 +10,4 @@ List allPossibleExercises = [
   {"id": 9, "name": "Incline bench"},
   {"id": 10, "name": "Kettlebell"}
 ];
+
