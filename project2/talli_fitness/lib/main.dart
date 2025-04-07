@@ -4,7 +4,15 @@ import 'ExerciseProvider.dart';
 import 'beginWorkoutPage.dart';
 import 'loadExercisesPage.dart';
 
-// navigation variables
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+//
+// Note: The overall styling/coloring of this application were created with assistance from AI (ChatGPT by OpenAI).
+//
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Navigation variables
 int curButtonTab = 0;
 final bottomNavScreens = [
   LoadExercisesPage(),
@@ -15,7 +23,7 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ExerciseProvider(),
-      child: MainApp(),
+      child: const MainApp(),
     ),
   );
 }
@@ -26,15 +34,22 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainPage(),
+      home: const MainPage(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: TextTheme(
+        fontFamily: 'Regular',
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        textTheme: const TextTheme(
           bodyMedium: TextStyle(
             color: Colors.black,
-            fontFamily: "Regular",
             fontSize: 18,
           ),
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          backgroundColor: Colors.teal,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
     );
@@ -52,22 +67,18 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Tali Fitness"),
-        backgroundColor: Colors.teal,
-      ),
       body: bottomNavScreens[curButtonTab],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.teal,
         currentIndex: curButtonTab,
         type: BottomNavigationBarType.fixed,
-        items: [
+        elevation: 8,
+        items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.first_page, color: Colors.white),
+            icon: Icon(Icons.fitness_center),
             label: "Load Exercises",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_moderator_outlined, color: Colors.white),
+            icon: Icon(Icons.play_circle_fill),
             label: "Begin Workout",
           ),
         ],

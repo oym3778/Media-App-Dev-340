@@ -1,13 +1,7 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
-import 'equipment.dart';
-
 import 'ExerciseProvider.dart';
+import 'equipment.dart';
 
 void main() {
   runApp(const LoadExercisesPage());
@@ -19,14 +13,35 @@ class LoadExercisesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainPage(),
+      home: const MainPage(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: TextTheme(
-          bodyMedium: TextStyle(
-            color: Colors.black,
-            fontFamily: "Regular",
-            fontSize: 18,
+        primarySwatch: Colors.teal,
+        scaffoldBackgroundColor: Colors.teal.shade50,
+        fontFamily: 'Montserrat',
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(fontSize: 18),
+          labelLarge: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.teal),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.teal, width: 2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          labelStyle: TextStyle(color: Colors.teal),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.teal,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            textStyle: const TextStyle(fontSize: 16),
           ),
         ),
       ),
@@ -34,9 +49,9 @@ class LoadExercisesPage extends StatelessWidget {
   }
 }
 
-
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -45,188 +60,181 @@ class _MainPageState extends State<MainPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController searchExcController = TextEditingController();
 
-  // api vairables:
-  // List<Exercise> data = []; PROVIUDER DOESNT USE THIS
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Tali Fitness"),
-      //   backgroundColor: Colors.teal,
-      // ),
+      appBar: AppBar(
+        title: const Text("Tali Fitness"),
+        centerTitle: true,
+        backgroundColor: Colors.teal.shade700,
+      ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Form(
               key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: searchExcController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty || value.length <= 2) {
-                      return "Please Enter A Valid Search";
-                    }
-                    searchTerm = value;
-                    return null;
-                  },
-                  // focusNode: _searchTerm,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3.0,
-                          color: Colors.black), // Default border thickness
-                    ),
-                    label: Text("Search Term"),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          searchExcController.clear();
-                        });
-                      },
-                      icon: Icon(Icons.clear),
-                    ),
+              child: TextFormField(
+                controller: searchExcController,
+                validator: (value) {
+                  if (value == null || value.isEmpty || value.length <= 2) {
+                    return "Please enter a valid Exercise";
+                  }
+                  searchTerm = value;
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: "Enter An Exercise... ex squat",
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () =>
+                        setState(() => searchExcController.clear()),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                if (context.watch<ExerciseProvider>().categoryList.length > 1 ||
+                    context
+                            .watch<ExerciseProvider>()
+                            .categoryList
+                            .first
+                            .value !=
+                        "N/A")
                   Expanded(
                     child: dropDownButton(
                       'Category',
-                      categoryList,
-                      selectedCategory,
+                      context.watch<ExerciseProvider>().categoryList,
+                      context.watch<ExerciseProvider>().selectedCategory,
                     ),
                   ),
+                if (context.watch<ExerciseProvider>().equipmentList.length >
+                        1 ||
+                    context
+                            .watch<ExerciseProvider>()
+                            .equipmentList
+                            .first
+                            .value !=
+                        "N/A")
                   Expanded(
                     child: dropDownButton(
                       'Equipment',
-                      equipmentList,
-                      selectedEquipment,
+                      context.watch<ExerciseProvider>().equipmentList,
+                      context.watch<ExerciseProvider>().selectedEquipment,
                     ),
                   ),
-                ],
-              ),
+              ],
             ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  // since some images are null we can sort the list to keep images and null images seperate,
-                  // looks cleaner i think
+                  context
+                      .read<ExerciseProvider>()
+                      .updateSelectedCategory("N/A");
+                  context
+                      .read<ExerciseProvider>()
+                      .updateSelectedEquipment("N/A");
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
+                    const SnackBar(content: Text('Searching...')),
                   );
-                  // TODO have a reset function for all filters
-                  categoryList = [
-                    DropdownMenuItem(
-                      value: "N/A",
-                      child: Text("N/A"),
-                    ),
-                  ];
-                  // var dataResponse = await getData(searchTerm);
-
-                  // setState(() {
-                  //   data = dataResponse;
-                  //   data.sort((a, b) => b.imageURL!.compareTo(a.imageURL!));
-                  // });
                   await context.read<ExerciseProvider>().getData(searchTerm);
-                  context.read<ExerciseProvider>().getExerciseByIDs();
+                  // ignore: use_build_context_synchronously
+                  // context.read<ExerciseProvider>().getExerciseByIDs();
                 }
               },
-              style: ButtonStyle(
-                padding:
-                    WidgetStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
-                backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
-              ),
-              child: const Text(
-                'Search',
-                selectionColor: Colors.black,
-                style: TextStyle(color: Colors.black),
-              ),
+              child: const Text('Search'),
             ),
+            const SizedBox(height: 16),
             SizedBox(
               height: 400,
-              child: GridView.builder(
-                  padding: EdgeInsets.all(8),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    childAspectRatio: 3.5,
-                    mainAxisSpacing: 7, // Adjust spacing as needed
-                    crossAxisSpacing: 10,
-                  ),
-                  itemCount: context.watch<ExerciseProvider>().items.length,
-                  itemBuilder: (context, index) {
-                    final exercise = context.watch<ExerciseProvider>().items[index];
-                    return Container(
-                      color: Colors.green,
-                      child: Row(
-                        children: [
-                          context
-                                      .watch<ExerciseProvider>()
-                                      .items[index]
-                                      .imageURL! !=
-                                  "https://placehold.co/300x300/png"
-                              ? SizedBox(
-                                  width: 150,
-                                  height: 150,
-                                  child: Image.network(context
-                                      .watch<ExerciseProvider>()
-                                      .items[index]
-                                      .imageURL!),
-                                )
-                              : Container(),
-                          Expanded(
-                            child: Container(
-                              color: Colors.blue,
-                              height: double.infinity,
-                              child: Expanded(
-                                child: SingleChildScrollView(
-                                  child: Center(
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                            "Name: ${context.watch<ExerciseProvider>().items[index].name}"),
-                                        Text(
-                                            "Category ${context.watch<ExerciseProvider>().items[index].category}"),
-                                        Text(
-                                            "ID: ${context.watch<ExerciseProvider>().items[index].id}"),
-                                      ],
+              child: Consumer<ExerciseProvider>(
+                builder: (context, provider, _) {
+                  return GridView.builder(
+                    padding: const EdgeInsets.all(8),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      childAspectRatio: 3.5,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: provider.items.length,
+                    itemBuilder: (context, index) {
+                      final exercise = provider.items[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.teal.shade100),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            if (exercise.imageURL != null &&
+                                exercise.imageURL !=
+                                    "https://placehold.co/300x300/png")
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  child: Image.network(exercise.imageURL!),
+                                ),
+                              ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Name: ${exercise.name}"),
+                                      Text("Category: ${exercise.category}"),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  context
+                                      .read<ExerciseProvider>()
+                                      .addWorkout(exercise);
+                                });
+                              },
+                              child: Container(
+                                height: double.infinity,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.teal,
+                                  borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(12),
+                                    bottomRight: Radius.circular(12),
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "ADD",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          AnimatedContainer(
-                            height: double.infinity,
-                            width: 50,
-                            duration: const Duration(seconds: 2),
-                            curve: Curves.easeIn,
-                            child: Material(
-                              color: Colors.yellow,
-                              child: InkWell(
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "ADD",
-                                    )),
-                                onTap: () {
-                                  setState(() {
-                                    context.read<ExerciseProvider>().addWorkout(exercise);
-                                    //TODO remove the workout from the items array in the future provider so you can add workouts twice
-                                  });
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -234,37 +242,23 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Container dropDownButton(String name, var options, String? currentValue) {
-    return Container(
-      color: Colors.white,
-      height: 70,
-      child: DropdownButtonFormField(
-        decoration: InputDecoration(
-          labelText: name,
-          border: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-            ), // Default border thickness
-          ),
-        ),
-        items: options,
-        value: currentValue,
-        onChanged: (selected) {
-          setState(() {
-            if (name == "Category") {
-              selectedCategory = selected!;
-            } else if (name == "Equipment") {
-              selectedEquipment = selected!;
-            }
-            currentValue =
-                selected; // i think this is an issue of pass by value vs reference. String is being passed by value i believe
-          });
-
-          context
-              .read<ExerciseProvider>()
-              .filter(selectedCategory, selectedEquipment);
-        },
-      ),
+  Widget dropDownButton(String name, var options, String? currentValue) {
+    return DropdownButtonFormField(
+      decoration: InputDecoration(labelText: name),
+      items: options,
+      value: currentValue,
+      onChanged: (selected) {
+        setState(() {
+          if (name == "Category") {
+            context.read<ExerciseProvider>().updateSelectedCategory(selected!);
+          } else if (name == "Equipment") {
+            context.read<ExerciseProvider>().updateSelectedEquipment(selected!);
+          }
+        });
+        // context.read<ExerciseProvider>().filter(
+        //     context.watch<ExerciseProvider>().selectedCategory,
+        //     context.watch<ExerciseProvider>().selectedEquipment);
+      },
     );
   }
 }

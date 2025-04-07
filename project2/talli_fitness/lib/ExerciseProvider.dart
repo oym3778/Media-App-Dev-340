@@ -12,21 +12,6 @@ List<int> equipment = [];
 // api vairables:
 String baseUrl = "https://wger.de/api/v2/exercise/search/?language=2&term=";
 String searchTerm = "";
-var equipmentList = [
-  DropdownMenuItem(
-    value: "N/A",
-    child: Text("N/A"),
-  ),
-];
-var categoryList = [
-  DropdownMenuItem(
-    value: "N/A",
-    child: Text("N/A"),
-  ),
-];
-
-String selectedCategory = "N/A";
-String selectedEquipment = "N/A";
 
 class Exercise {
   String? name;
@@ -50,20 +35,65 @@ class Exercise {
 }
 
 class ExerciseProvider extends ChangeNotifier {
+  String selectedCategory = "N/A";
+  String selectedEquipment = "N/A";
+
+  var equipmentList = [
+    DropdownMenuItem(
+      value: "N/A",
+      child: Text("N/A"),
+    ),
+  ];
+  var categoryList = [
+    DropdownMenuItem(
+      value: "N/A",
+      child: Text("N/A"),
+    ),
+  ];
+
   List<Exercise> items = [];
   List<Exercise> addedWorkout = [];
 
+  void updateSelectedCategory(String value) {
+    selectedCategory = value;
+    filter(selectedCategory, selectedEquipment);
+    notifyListeners();
+  }
+  void updateSelectedEquipment(String value) {
+    selectedEquipment = value;
+    filter(selectedCategory, selectedEquipment);
+    notifyListeners();
+  }
+
   void addWorkout(Exercise exercise) {
     addedWorkout.add(exercise);
+    items.remove(exercise);
     notifyListeners();
   }
 
   void removeWorkout(Exercise exercise) {
     addedWorkout.remove(exercise);
+    items.add(exercise);
     notifyListeners();
   }
 
   Future<void> getData(String searchTerm) async {
+    if (items.isNotEmpty) {
+      items.clear();
+      equipmentList = [
+        DropdownMenuItem(
+          value: "N/A",
+          child: Text("N/A"),
+        ),
+      ];
+      categoryList = [
+        DropdownMenuItem(
+          value: "N/A",
+          child: Text("N/A"),
+        ),
+      ];
+    }
+
     var response = await http.get(Uri.parse("$baseUrl$searchTerm"));
 
     var categories = [];
