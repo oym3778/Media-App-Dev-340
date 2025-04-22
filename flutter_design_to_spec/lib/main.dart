@@ -142,7 +142,7 @@ class _MainPageState extends State<MainPage> {
                     child: Image.asset('assets/images/oaktree.png'),
                   ),
                 ),
-                
+
                 Container(
                   color: textAreas,
                   child: Padding(
@@ -155,9 +155,7 @@ class _MainPageState extends State<MainPage> {
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: Text(
                               "THE OAK TREE",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
                         ),
@@ -211,12 +209,11 @@ class _MainPageState extends State<MainPage> {
                 ),
                 SizedBox(
                   height: 350,
-                  width: double
-                      .infinity,
+                  width: double.infinity,
                   child: Stack(
                     children: [
                       Positioned.fill(
-                        child: Image.asset(                                
+                        child: Image.asset(
                           'assets/images/trees.jpg',
                           fit: BoxFit
                               .cover, // Makes the image cover the entire container
@@ -228,21 +225,23 @@ class _MainPageState extends State<MainPage> {
                         right: 10, // Ensures text stays within bounds
                         child: Text(
                           "TREES ARE PRETTY COOL.\nRIGHT?",
-                          style:
-                              Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 16),
-                          textAlign:
-                              TextAlign.center, // Centers text if needed
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(fontSize: 16),
+                          textAlign: TextAlign.center, // Centers text if needed
                         ),
                       ),
                       Positioned(
-                        bottom:
-                            10, // Adjusts text position from the bottom
+                        bottom: 10, // Adjusts text position from the bottom
                         left: 10,
                         right: 10,
                         child: Text(
                           "COPYRIGHT 2024\nRIT SCHOOL OF INTERACTIVE GAMES\nAND MEDIA",
-                          style:
-                              Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 16),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(fontSize: 16),
                           textAlign: TextAlign.center,
                         ),
                       ),

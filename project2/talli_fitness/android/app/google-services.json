@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "849856580565",
+    "project_id": "tali-fitness",
+    "storage_bucket": "tali-fitness.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849856580565:android:4a4ad6eb545b7d1b714b5c",
+        "android_client_info": {
+          "package_name": "com.example.talli_fitness"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9ipALDyaCIJfsORpskD3I5scijZtIodg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,19 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:talli_fitness/Pages/registerPage.dart';
+import 'package:talli_fitness/auth/login_or_register.dart';
+import 'package:talli_fitness/firebase_options.dart';
 import 'ExerciseProvider.dart';
-import 'beginWorkoutPage.dart';
-import 'loadExercisesPage.dart';
+import 'Pages/beginWorkoutPage.dart';
+import 'Pages/loadExercisesPage.dart';
+import 'Pages/addRoutinePage.dart';
+import 'Pages/loginPage.dart';
 
-
-
-
-/**
- * V2 Requirments game plan Board
- * 
- * 
- * Firestore Authentication to create and keep accounts stored
- * Each account will have there own Weekly Routines
- */
+/// V2 Requirments game plan Board
+///
+///
+/// Firestore Authentication to create and keep accounts stored
+/// Each account will have there own Weekly Routines
 
 // ---------------------------------------------------------------------------------------------------------------------
 //
@@ -26,9 +27,12 @@ int curButtonTab = 0;
 final bottomNavScreens = [
   LoadExercisesPage(),
   WorkoutApp(),
+  RoutinePage(),
 ];
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     ChangeNotifierProvider(
       create: (context) => ExerciseProvider(),
@@ -73,30 +77,39 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+  bool loggedIn = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: bottomNavScreens[curButtonTab],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: curButtonTab,
-        type: BottomNavigationBarType.fixed,
-        elevation: 8,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: "Load Exercises",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.play_circle_fill),
-            label: "Begin Workout",
-          ),
-        ],
-        onTap: (value) {
-          setState(() {
-            curButtonTab = value;
-          });
-        },
-      ),
+      body: loggedIn ? bottomNavScreens[curButtonTab] : Container(),
+      bottomNavigationBar: loggedIn
+          ? BottomNavigationBar(
+              currentIndex: curButtonTab,
+              type: BottomNavigationBarType.fixed,
+              elevation: 8,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.fitness_center),
+                  label: "Load Exercises",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.play_circle_fill),
+                  label: "Begin Workout",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.play_circle_fill),
+                  label: "Add Routines",
+                ),
+              ],
+              onTap: (value) {
+                setState(() {
+                  curButtonTab = value;
+                });
+              },
+            )
+          : LoginOrRegister()
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'ExerciseProvider.dart';
-import 'equipment.dart';
+import '../ExerciseProvider.dart';
+import '../Filterables/equipment.dart';
 
 void main() {
   runApp(const LoadExercisesPage());

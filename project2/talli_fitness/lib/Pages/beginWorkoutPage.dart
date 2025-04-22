@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'ExerciseProvider.dart';
+import '../ExerciseProvider.dart';
 
 class WorkoutApp extends StatefulWidget {
   const WorkoutApp({super.key});

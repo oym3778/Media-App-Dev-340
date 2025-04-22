@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-import 'equipment.dart';
+import 'Filterables/equipment.dart';
 
 List<int> equipment = [];
 
@@ -130,7 +130,7 @@ class ExerciseProvider extends ChangeNotifier {
         // do the same thing for equipment with a bit more work since we aren't given equipment in the inital request...
       }
     }
-    filter("N/A","N/A");
+    //filter("N/A","N/A");
     notifyListeners(); // let everyone know something changed
   }
 
