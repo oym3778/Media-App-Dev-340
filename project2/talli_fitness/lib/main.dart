@@ -6,6 +6,15 @@ import 'loadExercisesPage.dart';
 
 
 
+
+/**
+ * V2 Requirments game plan Board
+ * 
+ * 
+ * Firestore Authentication to create and keep accounts stored
+ * Each account will have there own Weekly Routines
+ */
+
 // ---------------------------------------------------------------------------------------------------------------------
 //
 // Note: The overall styling/coloring of this application were created with assistance from AI (ChatGPT by OpenAI).

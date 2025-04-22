@@ -60,65 +60,66 @@ class _WorkoutAppState extends State<WorkoutApp>
                 });
 
                 return Dialog(
-  insetPadding: EdgeInsets.zero,
-  backgroundColor: Colors.black.withOpacity(0.7), // translucent background
-  child: Container(
-    width: double.infinity,
-    height: double.infinity,
-    alignment: Alignment.center,
-    child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 16,
-            offset: Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (workouts[i].imageURL != null &&
-              workouts[i].imageURL != "https://placehold.co/300x300/png")
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                workouts[i].imageURL!,
-                height: 250,
-                fit: BoxFit.cover,
-              ),
-            ),
-          const SizedBox(height: 24),
-          Text(
-            workouts[i].name ?? 'No name',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            "$countdown",
-            style: const TextStyle(
-              fontSize: 48,
-              color: Colors.teal,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    ),
-  ),
-);
-
+                  insetPadding: EdgeInsets.zero,
+                  backgroundColor:
+                      Colors.white.withOpacity(0.7), // translucent background
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    alignment: Alignment.center,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 16,
+                            offset: Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (workouts[i].imageURL != null &&
+                              workouts[i].imageURL !=
+                                  "no_image")
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.network(
+                                workouts[i].imageURL!,
+                                height: 250,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          const SizedBox(height: 24),
+                          Text(
+                            workouts[i].name ?? 'No name',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "$countdown",
+                            style: const TextStyle(
+                              fontSize: 48,
+                              color: Colors.teal,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
               },
             );
           },
@@ -146,7 +147,7 @@ class _WorkoutAppState extends State<WorkoutApp>
         builder: (context, provider, child) {
           return Column(
             children: [
-              provider.addedWorkout.isEmpty
+              provider.addedExercises.isEmpty
                   ? const Expanded(
                       child: Center(
                         child: Text(
@@ -168,9 +169,9 @@ class _WorkoutAppState extends State<WorkoutApp>
                               childAspectRatio: 3.5,
                               mainAxisSpacing: 10,
                             ),
-                            itemCount: provider.addedWorkout.length,
+                            itemCount: provider.addedExercises.length,
                             itemBuilder: (context, index) {
-                              final exercise = provider.addedWorkout[index];
+                              final exercise = provider.addedExercises[index];
                               return Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -186,7 +187,7 @@ class _WorkoutAppState extends State<WorkoutApp>
                                 child: Row(
                                   children: [
                                     if (exercise.imageURL !=
-                                        "https://placehold.co/300x300/png")
+                                        "no_image")
                                       ClipRRect(
                                         borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(16),
@@ -255,7 +256,7 @@ class _WorkoutAppState extends State<WorkoutApp>
                 padding: const EdgeInsets.all(16),
                 child: GestureDetector(
                   onTap: () {
-                    final workouts = provider.addedWorkout;
+                    final workouts = provider.addedExercises;
                     if (workouts.isNotEmpty) {
                       setState(() {});
                       startWorkoutSequence(workouts);

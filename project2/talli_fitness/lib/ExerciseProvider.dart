@@ -28,7 +28,8 @@ class Exercise {
     required this.equipment,
   }) {
     if (imageURL == "https://wger.de/null") {
-      imageURL = "https://placehold.co/300x300/png";
+      // imageURL = "https://placehold.co/300x300/png";
+      imageURL = "no_image";
       //https://wger.de/
     }
   }
@@ -51,8 +52,8 @@ class ExerciseProvider extends ChangeNotifier {
     ),
   ];
 
-  List<Exercise> items = [];
-  List<Exercise> addedWorkout = [];
+  List<Exercise> searchedExercises = [];
+  List<Exercise> addedExercises = [];
 
   void updateSelectedCategory(String value) {
     selectedCategory = value;
@@ -65,21 +66,22 @@ class ExerciseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// add the workout to the addedExercises list
   void addWorkout(Exercise exercise) {
-    addedWorkout.add(exercise);
-    items.remove(exercise);
+    addedExercises.add(exercise);
+    searchedExercises.remove(exercise);
     notifyListeners();
   }
 
   void removeWorkout(Exercise exercise) {
-    addedWorkout.remove(exercise);
-    items.add(exercise);
+    addedExercises.remove(exercise);
+    searchedExercises.add(exercise);
     notifyListeners();
   }
 
   Future<void> getData(String searchTerm) async {
-    if (items.isNotEmpty) {
-      items.clear();
+    if (searchedExercises.isNotEmpty) {
+      searchedExercises.clear();
       equipmentList = [
         DropdownMenuItem(
           value: "N/A",
@@ -102,7 +104,7 @@ class ExerciseProvider extends ChangeNotifier {
       var data = json.decode(response.body);
 
       for (int i = 0; i < data["suggestions"].length; i++) {
-        items.add(
+        searchedExercises.add(
           Exercise(
               name: data["suggestions"][i]["data"]["name"].toString(),
               imageURL:
@@ -115,12 +117,12 @@ class ExerciseProvider extends ChangeNotifier {
         // if category is already in the list, dont add. Otherwise add it.
         // Doing this so we can let the user only filter categories that were queried in above response.
         // Doing squats most likely wont work out our arms. So, Arms wont show up as filterable... unless it did show up in the list....
-        if (!categories.contains(items[i].category)) {
-          categories.add(items[i].category);
+        if (!categories.contains(searchedExercises[i].category)) {
+          categories.add(searchedExercises[i].category);
           categoryList.add(
             DropdownMenuItem(
-              value: items[i].category,
-              child: Text("${items[i].category}"),
+              value: searchedExercises[i].category,
+              child: Text("${searchedExercises[i].category}"),
             ),
           );
         }
@@ -128,23 +130,23 @@ class ExerciseProvider extends ChangeNotifier {
         // do the same thing for equipment with a bit more work since we aren't given equipment in the inital request...
       }
     }
-    items.sort((a, b) => b.imageURL!.compareTo(a.imageURL!));
+    filter("N/A","N/A");
     notifyListeners(); // let everyone know something changed
   }
 
   Future<void> getExerciseByIDs() async {
     List<int> allEquipment = []; // Temporary list to collect all equipment IDs
 
-    for (int i = 0; i < items.length; i++) {
+    for (int i = 0; i < searchedExercises.length; i++) {
       var responseID = await http.get(
-        Uri.parse("https://wger.de/api/v2/exercise/${items[i].id}"),
+        Uri.parse("https://wger.de/api/v2/exercise/${searchedExercises[i].id}"),
       );
 
       if (responseID.statusCode == 200) {
         var dataID = json.decode(responseID.body);
         allEquipment.addAll(
             List<int>.from(dataID["equipment"])); // Collect all equipment IDs
-        items[i].equipment = dataID["equipment"];
+        searchedExercises[i].equipment = dataID["equipment"];
       }
     }
 
@@ -170,9 +172,18 @@ class ExerciseProvider extends ChangeNotifier {
 
   void filter(String category, String equipments) {
     if (category == "N/A" && equipments == "N/A") {
-      items.sort((a, b) => b.imageURL!.compareTo(a.imageURL!));
+      //searchedExercises.sort((a, b) => b.imageURL!.compareTo(a.imageURL!));
+      searchedExercises.sort((a, b) {
+        // Prioritize items matching the given category
+        if (a.imageURL == "no_image" && b.imageURL != "no_image") {
+          return 1; // a comes first
+        } else if (b.imageURL == "no_image" && a.imageURL != "no_image") {
+          return -1; // b comes first
+        }
+        return 0; // Otherwise, keep order unchanged
+      });
     } else if (category != "N/A") {
-      items.sort((a, b) {
+      searchedExercises.sort((a, b) {
         // Prioritize items matching the given category
         if (a.category == category && b.category != category) {
           return -1; // a comes first
@@ -184,7 +195,7 @@ class ExerciseProvider extends ChangeNotifier {
     }
 
     if (equipments != "N/A") {
-      items.sort((a, b) {
+      searchedExercises.sort((a, b) {
         // Prioritize items matching the given category
         if (a.equipment.contains(equipments) &&
             !b.equipment.contains(equipments)) {
