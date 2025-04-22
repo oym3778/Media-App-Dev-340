@@ -1,7 +1,9 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:talli_fitness/Components/my_button.dart';
+import '/Components/my_button.dart';
+import '/HelperFunctions/helper_functions.dart';
 import '/Components/my_textfield.dart';
 
 // -----------------------------------------------------------------------------------
@@ -9,21 +11,64 @@ import '/Components/my_textfield.dart';
 //                   https://www.youtube.com/watch?v=0RWLaJxW7Oc
 // -----------------------------------------------------------------------------------
 
-class Registerpage extends StatelessWidget {
+class Registerpage extends StatefulWidget {
   final void Function()? onTap;
 
-  Registerpage({
+  const Registerpage({
     super.key,
     required this.onTap,
   });
 
+  @override
+  State<Registerpage> createState() => _RegisterpageState();
+}
+
+class _RegisterpageState extends State<Registerpage> {
   // text controllers
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPwdController = TextEditingController();
 
-  void register() {}
+  Future<void> registerUser() async {
+    // show loading circle
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    // make sure passwords match
+    if (passwordController.text != confirmPwdController.text) {
+      // pop loading circle
+      Navigator.pop(context);
+
+      // shpw error messahe to user
+      //TODO I wonder if you could use a final formKey = GlobalKey<FormState>(); for validating
+      displayMessageToUser("Passwords don't match!", context);
+    } else {
+      // try creating the user
+      try {
+        // create user
+        UserCredential? userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        // pop loading circle
+        // TODO this caused an issue, removing for now but will come back to review
+        // Navigator.pop(context);
+      } on FirebaseAuthException catch (e) {
+        // pop loading circle
+        Navigator.pop(context);
+
+        // display error message to the user
+        displayMessageToUser(e.code, context);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +124,7 @@ class Registerpage extends StatelessWidget {
                 SizedBox(height: 25),
 
                 // register button
-                MyButton(onTap: register, text: "Register"),
+                MyButton(onTap: registerUser, text: "Register"),
                 SizedBox(height: 25),
 
                 // already have an account? Register Here...
@@ -88,7 +133,7 @@ class Registerpage extends StatelessWidget {
                   children: [
                     Text("Already have an account?"),
                     GestureDetector(
-                      onTap: onTap,
+                      onTap: widget.onTap,
                       child: const Text(
                           style: TextStyle(fontWeight: FontWeight.bold),
                           " Login Here"),

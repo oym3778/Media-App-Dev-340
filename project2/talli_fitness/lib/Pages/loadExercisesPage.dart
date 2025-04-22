@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../ExerciseProvider.dart';
@@ -62,6 +64,10 @@ class _MainPageState extends State<MainPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController searchExcController = TextEditingController();
 
+  void logout(){
+    FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +75,15 @@ class _MainPageState extends State<MainPage> {
         title: const Text("Tali Fitness"),
         centerTitle: true,
         backgroundColor: Colors.teal.shade700,
+        actions: [
+          //logout button
+          IconButton(
+            onPressed: logout,
+            icon: Icon(
+              color: Colors.white,
+              Icons.logout),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
