@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:talli_fitness/Components/exercise.dart';
+import 'package:talli_fitness/Components/exercise.dart';
 import '../ExerciseProvider.dart';
 
 class WorkoutApp extends StatefulWidget {

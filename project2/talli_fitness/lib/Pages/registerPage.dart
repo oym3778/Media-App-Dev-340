@@ -1,7 +1,10 @@
 // ignore_for_file: file_names, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:talli_fitness/Components/exercise.dart';
+import 'package:talli_fitness/ExerciseProvider.dart';
 import '/Components/my_button.dart';
 import '/HelperFunctions/helper_functions.dart';
 import '/Components/my_textfield.dart';
@@ -30,6 +33,17 @@ class _RegisterpageState extends State<Registerpage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPwdController = TextEditingController();
 
+  Map<String, List<Exercise>> routine = <String, List<Exercise>>{
+    "Monday": [],
+    "Tuesday": [],
+    "Wednesday": [],
+    "Thursday": [],
+    "Friday": [],
+    "Saturday": [],
+    "Sunday": [],
+  };
+ 
+
   Future<void> registerUser() async {
     // show loading circle
     showDialog(
@@ -55,7 +69,10 @@ class _RegisterpageState extends State<Registerpage> {
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
-        );
+        ); 
+
+        // create a user document and add to firestore
+        createUserDocument(userCredential);
 
         // pop loading circle
         // TODO this caused an issue, removing for now but will come back to review
@@ -67,6 +84,21 @@ class _RegisterpageState extends State<Registerpage> {
         // display error message to the user
         displayMessageToUser(e.code, context);
       }
+    }
+  }
+
+  // create a user document and collect them in the firestore
+  Future<void> createUserDocument(UserCredential? userCredential) async {
+
+    if (userCredential != null && userCredential.user != null) {
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userCredential.user!.email)
+          .set({
+            'email' : userCredential.user!.email,
+            'name' : nameController.text, 
+            'routine' : routine,
+          });
     }
   }
 

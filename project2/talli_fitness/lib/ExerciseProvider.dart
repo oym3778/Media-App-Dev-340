@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:talli_fitness/Components/exercise.dart';
 
 import 'Filterables/equipment.dart';
 
@@ -12,28 +13,6 @@ List<int> equipment = [];
 // api vairables:
 String baseUrl = "https://wger.de/api/v2/exercise/search/?language=2&term=";
 String searchTerm = "";
-
-class Exercise {
-  String? name;
-  String? imageURL;
-  String? id;
-  String? category;
-  var equipment = [];
-
-  Exercise({
-    required this.name,
-    required this.imageURL,
-    required this.id,
-    required this.category,
-    required this.equipment,
-  }) {
-    if (imageURL == "https://wger.de/null") {
-      // imageURL = "https://placehold.co/300x300/png";
-      imageURL = "no_image";
-      //https://wger.de/
-    }
-  }
-}
 
 class ExerciseProvider extends ChangeNotifier {
   String selectedCategory = "N/A";

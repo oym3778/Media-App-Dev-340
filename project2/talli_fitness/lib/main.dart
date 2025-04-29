@@ -108,7 +108,8 @@ class _MainPageState extends State<MainPage> {
                           curButtonTab = value;
                         });
                       },
-                    ));
+                  ),
+                );
               }
               // user is NOT logged in
               else {

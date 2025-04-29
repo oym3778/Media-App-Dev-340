@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '/Components/firestore.dart';
 import '../ExerciseProvider.dart';
 import '../Filterables/equipment.dart';
 
@@ -63,6 +64,7 @@ class _MainPageState extends State<MainPage> {
   // used to validate the search result / clear searched input
   final _formKey = GlobalKey<FormState>();
   final TextEditingController searchExcController = TextEditingController();
+  FireStoreDatabase routinesDB = FireStoreDatabase();
 
   void logout(){
     FirebaseAuth.instance.signOut();
@@ -232,7 +234,9 @@ class _MainPageState extends State<MainPage> {
                             InkWell(
                               onTap: () {
                                 setState(() {
-                                  provider.addWorkout(exercise);
+                                  // provider.addWorkout(exercise); TODO uncoment this for adding to work
+                                  // testing adding exercise to firestore
+                                  routinesDB.addExercise("Monday", exercise);
                                 });
                               },
                               child: Container(
