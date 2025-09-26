@@ -21,7 +21,7 @@ Tali Fitness is a mobile app that allows users to log and manage workouts throug
 
 Watch Tali Fitness in action with this short GIF preview:
 
-![Tali Fitness Demo GIF](https://github.com/user-attachments/assets/20ea4ca0-0118-4792-bb16-6a0a258b29cd)
+(https://github.com/user-attachments/assets/20ea4ca0-0118-4792-bb16-6a0a258b29cd)
 
 For the full walkthrough, check out the video on YouTube:  
 [Full Tali Fitness Demo](https://www.youtube.com/watch?v=D-5ZyRsphMM)
