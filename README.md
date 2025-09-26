@@ -19,13 +19,12 @@ Tali Fitness is a mobile app that allows users to log and manage workouts throug
 
 ### 🎥 Tali Fitness Demo
 
-Watch Tali Fitness in action! You can check out the **full walkthrough on YouTube** or view the local demo video included in the repo.
+Watch Tali Fitness in action with this short GIF preview:
 
-- **Local Demo Video:** [Click here](https://github.com/user-attachments/assets/20ea4ca0-0118-4792-bb16-6a0a258b29cd)  
-- **YouTube Demo:**  
-[![Tali Fitness Demo](https://img.youtube.com/vi/D-5ZyRsphMM/0.jpg)](https://www.youtube.com/watch?v=D-5ZyRsphMM)
+![Tali Fitness Demo GIF](https://github.com/user-attachments/assets/20ea4ca0-0118-4792-bb16-6a0a258b29cd)
 
-Click the image above to view the demo on YouTube.
+For the full walkthrough, check out the video on YouTube:  
+[Full Tali Fitness Demo](https://www.youtube.com/watch?v=D-5ZyRsphMM)
 
 **Tech Stack:** Flutter, Dart, Firebase (Firestore)
 
